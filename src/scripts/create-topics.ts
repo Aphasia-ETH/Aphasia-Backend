@@ -1,33 +1,50 @@
-import { HCSService } from '../services/blockchain/hcs.service';
-import { client } from '../config/hedera';
+// src/scripts/create-topics.ts
+import { Client, TopicCreateTransaction, PrivateKey } from '@hashgraph/sdk';
+import dotenv from 'dotenv';
 
-async function createTopics() {
+dotenv.config();
+
+const accountId = process.env.HEDERA_ACCOUNT_ID!;
+const rawKey = process.env.HEDERA_PRIVATE_KEY!;
+
+let privateKey: PrivateKey;
+if (rawKey.startsWith('302e')) privateKey = PrivateKey.fromStringDer(rawKey);
+else if (rawKey.startsWith('0x')) privateKey = PrivateKey.fromStringECDSA(rawKey);
+else privateKey = PrivateKey.fromString(rawKey);
+
+const client = Client.forTestnet();
+client.setOperator(accountId, privateKey);
+
+export async function createTopic(memo: string) {
+  const tx = await new TopicCreateTransaction().setTopicMemo(memo).execute(client);
+  const receipt = await tx.getReceipt(client);
+  return receipt.topicId.toString();
+}
+
+export async function createTopics() {
   try {
     console.log('Creating HCS topics...\n');
 
-    // Create verifications topic
-    console.log('Creating verifications topic...');
-    const verificationsTopicId = await HCSService.createTopic(
-      'Aphasia - User Verifications'
-    );
+    const verificationsTopicId = await createTopic('Aphasia - User Verifications');
     console.log('✅ Verifications topic created:', verificationsTopicId);
 
-    // Create reviews topic
-    console.log('\nCreating reviews topic...');
-    const reviewsTopicId = await HCSService.createTopic(
-      'Aphasia - Review Attestations'
-    );
+    const reviewsTopicId = await createTopic('Aphasia - Review Attestations');
     console.log('✅ Reviews topic created:', reviewsTopicId);
 
     console.log('\n📝 Add these to your .env file:');
     console.log(`HEDERA_TOPIC_ID_VERIFICATIONS=${verificationsTopicId}`);
     console.log(`HEDERA_TOPIC_ID_REVIEWS=${reviewsTopicId}`);
 
-    client.close();
+    return { verificationsTopicId, reviewsTopicId };
   } catch (error) {
     console.error('Error creating topics:', error);
-    process.exit(1);
+    throw error;
+  } finally {
+    client.close();
   }
 }
 
-createTopics();
+// ✅ ES module-compatible main check
+if (import.meta.url === process.argv[1]) {
+  createTopics();
+}

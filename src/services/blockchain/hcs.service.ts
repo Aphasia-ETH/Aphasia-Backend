@@ -3,7 +3,7 @@ import {
   TopicMessageSubmitTransaction,
   TopicId,
 } from '@hashgraph/sdk';
-import { client, mirrorNodeUrl } from '../../config/hedera';
+import { client, mirrorNodeUrl } from '../../config/hedera.ts';
 import axios from 'axios';
 
 export class HCSService {
