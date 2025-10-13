@@ -8,7 +8,7 @@ Backend API for Aphasia - Verified Reviews powered by Web3.
 - **Database:** PostgreSQL (Neon) + Prisma ORM
 - **Blockchain:** Hedera (HCS + DID)
 - **Storage:** IPFS (Pinata)
-- **Auth:** Privy + JWT
+- **Auth:** Email + JWT
 
 ## Setup
 
@@ -18,7 +18,6 @@ Backend API for Aphasia - Verified Reviews powered by Web3.
 - Neon database account
 - Hedera testnet account
 - Pinata account
-- Privy account
 
 ### Installation
 ```bash
