@@ -1,0 +1,141 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String   @id @default(cuid())
+  privyUserId       String   @unique
+  privyWallet       String
+  hederaDID         String   @unique
+  email             String?
+  emailVerified     Boolean  @default(false)
+  verificationLevel Int      @default(0)
+  trustScore        Int      @default(0)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  lastActiveAt      DateTime @default(now())
+
+  verifications Verification[]
+  reviews       Review[]
+  sessions      Session[]
+
+  @@index([privyUserId])
+  @@index([hederaDID])
+  @@index([verificationLevel])
+  @@index([trustScore])
+}
+
+model Verification {
+  id              String    @id @default(cuid())
+  userId          String
+  level           Int
+  type            String
+  verified        Boolean   @default(false)
+  score           Int       @default(0)
+  metadata        Json?
+  hederaSequence  String?
+  hederaTopicId   String?
+  hederaTimestamp DateTime?
+  verifiedAt      DateTime?
+  expiresAt       DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([level])
+  @@index([type])
+}
+
+model Review {
+  id                      String   @id @default(cuid())
+  productId               String
+  productUrl              String
+  platform                String
+  rating                  Int
+  title                   String?
+  text                    String
+  images                  String[]
+  authorId                String
+  authorVerificationLevel Int
+  authorTrustScore        Int
+  isAnonymous             Boolean  @default(false)
+  ipfsHash                String   @unique
+  hederaSequence          String
+  hederaTopicId           String
+  hederaTimestamp         DateTime
+  onChainVerified         Boolean  @default(false)
+  helpfulCount            Int      @default(0)
+  reportCount             Int      @default(0)
+  status                  String   @default("active")
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@index([authorId])
+  @@index([platform])
+  @@index([authorVerificationLevel])
+  @@index([authorTrustScore])
+  @@index([createdAt])
+  @@index([hederaSequence])
+}
+
+model Attestation {
+  id              String   @id @default(cuid())
+  type            String
+  entityType      String
+  entityId        String
+  hederaTopicId   String
+  hederaSequence  String
+  hederaTimestamp DateTime
+  transactionId   String
+  data            Json
+  cost            Float
+  createdAt       DateTime @default(now())
+
+  @@index([entityType, entityId])
+  @@index([type])
+  @@index([hederaSequence])
+}
+
+model Session {
+  id         String   @id @default(cuid())
+  userId     String
+  privyToken String
+  jwtToken   String
+  ipAddress  String?
+  userAgent  String?
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model Product {
+  id                String    @id @default(cuid())
+  platform          String
+  externalId        String
+  url               String
+  name              String?
+  category          String?
+  reviewCount       Int       @default(0)
+  averageTrustScore Int       @default(0)
+  averageRating     Float     @default(0)
+  lastScrapedAt     DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@unique([platform, externalId])
+  @@index([platform])
+}
