@@ -2,9 +2,9 @@ import express, { Application } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
-import { logger } from './utils/logger';
-import errorHandler from './middleware/error.middleware';
-import Database from './config/database';
+import { logger } from './utils/logger.ts';
+import errorHandler from './middleware/error.middleware.ts';
+import Database from './config/database.ts';
 
 // Load environment variables
 dotenv.config();
@@ -31,7 +31,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Routes
+// Health check
 app.get('/health', (req, res) => {
   res.json({
     status: 'ok',
@@ -41,8 +41,8 @@ app.get('/health', (req, res) => {
 });
 
 // Mount API routes
-import reviewsRoutes from './api/routes/reviews.routes';
-app.use('/reviews', reviewsRoutes);
+import apiRoutes from './api/index.ts';
+app.use('/api', apiRoutes);
 
 // 404 handler
 app.use((req, res) => {
@@ -61,9 +61,9 @@ app.use(errorHandler);
 // Start server
 async function startServer() {
   try {
-    // Connect to database
-    await Database.connect();
-    logger.info('Database connected');
+    // Connect to database - temporarily disabled for debugging
+    // await Database.connect();
+    // logger.info('Database connected');
 
     // Start listening
     app.listen(PORT, () => {

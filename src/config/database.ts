@@ -15,11 +15,7 @@ class Database {
           : ['error'],
       });
 
-      // Handle cleanup on app shutdown
-      process.on('beforeExit', async () => {
-        await Database.instance.$disconnect();
-        logger.info('Database connection closed');
-      });
+      // Note: Cleanup will be handled by the main app shutdown handlers
     }
 
     return Database.instance;

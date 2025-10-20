@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import authRoutes from './auth.routes';
-import usersRoutes from './users.routes';
-import reviewsRoutes from './reviews.routes';
-import verificationRoutes from './verification.routes';
+import authRoutes from './auth.routes.ts';
+import usersRoutes from './users.routes.ts';
+import reviewsRoutes from './reviews.routes.ts';
+import verificationRoutes from './verification.routes.ts';
 
 const router = Router();
 

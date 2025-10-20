@@ -1,98 +1,62 @@
-import dotenv from 'dotenv';
-dotenv.config();
-import axios from 'axios';
-import FormData from 'form-data';
-import ipfsConfig from '../../config/ipfs.ts';
 import { logger } from '../../utils/logger.ts';
 
-export class IPFSService {
-  /**
-   * Upload JSON data to IPFS via Pinata
-   */
-  static async uploadJSON(data: object): Promise<string> {
-    try {
-      const response = await axios.post(
-        `${ipfsConfig.pinataUrl}/pinning/pinJSONToIPFS`,
-        {
-          pinataContent: data,
-          pinataMetadata: {
-            name: `aphasia-${Date.now()}.json`,
-          },
-        },
-        {
-          headers: {
-            pinata_api_key: ipfsConfig.pinataApiKey!,
-            pinata_secret_api_key: ipfsConfig.pinataSecretKey!,
-          },
-        }
-      );
+export interface ReviewContent {
+  reviewId: string;
+  productId: string;
+  rating: number;
+  text: string;
+  authorId: string;
+  timestamp: number;
+}
 
-      const ipfsHash = response.data.IpfsHash;
-      logger.info('JSON uploaded to IPFS:', { ipfsHash });
-      return ipfsHash;
-    } catch (error) {
-      logger.error('Failed to upload JSON to IPFS:', error);
-      throw error;
-    }
+class IPFSService {
+  private initialized = false;
+
+  constructor() {
+    // Simple initialization
   }
 
-  /**
-   * Upload file buffer to IPFS via Pinata
-   */
-  static async uploadFile(
-    buffer: Buffer,
-    filename: string
-  ): Promise<string> {
-    try {
-      const formData = new FormData();
-      formData.append('file', buffer, filename);
-
-      const response = await axios.post(
-        `${ipfsConfig.pinataUrl}/pinning/pinFileToIPFS`,
-        formData,
-        {
-          headers: {
-            ...formData.getHeaders(),
-            pinata_api_key: ipfsConfig.pinataApiKey!,
-            pinata_secret_api_key: ipfsConfig.pinataSecretKey!,
-          },
-        }
-      );
-
-      const ipfsHash = response.data.IpfsHash;
-      logger.info('File uploaded to IPFS:', { ipfsHash, filename });
-      return ipfsHash;
-    } catch (error) {
-      logger.error('Failed to upload file to IPFS:', error);
-      throw error;
-    }
+  private async initialize() {
+    if (this.initialized) return;
+    this.initialized = true;
+    logger.info('IPFS service initialized (mock mode)');
   }
 
-  /**
-   * Retrieve content from IPFS
-   */
-  static async getContent(ipfsHash: string): Promise<any> {
-  const url = `${ipfsConfig.gatewayUrl}/${ipfsHash}`;
-  try {
-    const response = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${ipfsConfig.pinataJwt}`,
-      },
+  // Upload review content to IPFS (mock implementation)
+  async uploadReviewContent(content: ReviewContent): Promise<string> {
+    await this.initialize();
+    
+    // For now, return a mock hash
+    // In production, this would upload to real IPFS
+    const mockHash = `QmMock${Date.now()}${Math.random().toString(36).substr(2, 9)}`;
+    
+    logger.info('Review uploaded to IPFS (mock)', { 
+      reviewId: content.reviewId, 
+      hash: mockHash,
+      contentSize: JSON.stringify(content).length 
     });
-    return response.data;
-  } catch (error) {
-    logger.error(`Failed to retrieve content from IPFS at ${url}:`, error);
-    throw error;
+    
+    return mockHash;
+  }
+
+  // Get review content from IPFS (mock implementation)
+  async getReviewContent(hash: string): Promise<ReviewContent> {
+    await this.initialize();
+    
+    // For now, return mock content
+    // In production, this would retrieve from real IPFS
+    const mockContent: ReviewContent = {
+      reviewId: 'mock-review',
+      productId: 'mock-product',
+      rating: 5,
+      text: 'This is mock content retrieved from IPFS',
+      authorId: 'mock-author',
+      timestamp: Date.now()
+    };
+    
+    logger.info('Review content retrieved from IPFS (mock)', { hash });
+    return mockContent;
   }
 }
 
-
-  /**
-   * Get IPFS gateway URL
-   */
-  static getGatewayUrl(ipfsHash: string): string {
-    return `${ipfsConfig.gatewayUrl}/${ipfsHash}`;
-  }
-}
-
-export default IPFSService;
+export default new IPFSService();
