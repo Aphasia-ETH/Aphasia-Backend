@@ -26,15 +26,33 @@ npm install
 
 # Create .env with your credentials
 cat > .env <<'ENV'
+# Database
+DATABASE_URL="postgresql://username:password@localhost:5432/aphasia_db"
+
+# JWT
+JWT_SECRET="your-super-secret-jwt-key-here"
+
+# Hedera
 HEDERA_TESTNET_RPC_URL=https://testnet.hashio.io/api
 HEDERA_PRIVATE_KEY=0x...
 REVIEW_ATTESTATION_ADDRESS=0x...
 HCS_TOPIC_ID=0.0.xxxxxx
 
-# Scoring weights
+# Review weights
 WEIGHT_L1=0.5
 WEIGHT_L2=1.0
 WEIGHT_L3=2.0
+
+# IPFS (for production, use Infura/Pinata)
+IPFS_PINNING_SERVICE=local
+# IPFS_URL=https://ipfs.infura.io:5001
+# IPFS_PROJECT_ID=your-infura-project-id
+# IPFS_PROJECT_SECRET=your-infura-project-secret
+
+# Server
+PORT=3000
+NODE_ENV=development
+CORS_ORIGIN=*
 ENV
 
 # Run database migrations
