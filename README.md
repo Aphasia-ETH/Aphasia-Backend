@@ -24,11 +24,18 @@ Backend API for Aphasia - Verified Reviews powered by Web3.
 # Install dependencies
 npm install
 
-# Copy environment variables
-cp .env.example .env
+# Create .env with your credentials
+cat > .env <<'ENV'
+HEDERA_TESTNET_RPC_URL=https://testnet.hashio.io/api
+HEDERA_PRIVATE_KEY=0x...
+REVIEW_ATTESTATION_ADDRESS=0x...
+HCS_TOPIC_ID=0.0.xxxxxx
 
-# Edit .env with your credentials
-nano .env
+# Scoring weights
+WEIGHT_L1=0.5
+WEIGHT_L2=1.0
+WEIGHT_L3=2.0
+ENV
 
 # Run database migrations
 npm run prisma:migrate
