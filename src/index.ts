@@ -40,8 +40,9 @@ app.get('/health', (req, res) => {
   });
 });
 
-// TODO: Mount API routes here
-// app.use('/api/v1', apiRoutes);
+// Mount API routes
+import reviewsRoutes from './api/routes/reviews.routes';
+app.use('/reviews', reviewsRoutes);
 
 // 404 handler
 app.use((req, res) => {
