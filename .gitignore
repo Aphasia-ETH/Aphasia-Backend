@@ -3,7 +3,7 @@
 logs/
 # Node modules
 /node_modules
-
+node_modules
 # Compilation output
 /dist
 
@@ -21,3 +21,5 @@ logs/
 
 # Hardhat coverage reports
 /coverage
+
+*.md

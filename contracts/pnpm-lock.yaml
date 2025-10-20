@@ -15,18 +15,33 @@ importers:
         specifier: ^17.2.3
         version: 17.2.3
     devDependencies:
+      '@nomicfoundation/hardhat-ethers':
+        specifier: ^4.0.2
+        version: 4.0.2(hardhat@3.0.7)
       '@nomicfoundation/hardhat-ignition':
         specifier: ^3.0.3
         version: 3.0.3(@nomicfoundation/hardhat-verify@3.0.3(hardhat@3.0.7))(hardhat@3.0.7)
+      '@nomicfoundation/hardhat-network-helpers':
+        specifier: ^3.0.1
+        version: 3.0.1(hardhat@3.0.7)
       '@nomicfoundation/hardhat-toolbox':
         specifier: ^6.1.0
-        version: 6.1.0(aef264153621c52b02978f1d5e2a7496)
+        version: 6.1.0(ae09bad6bc43c66cfea667c1efcf7da2)
       '@nomicfoundation/hardhat-toolbox-viem':
         specifier: ^5.0.0
-        version: 5.0.0(a4351d08991c7b6eb49cb9b43ec37a6e)
+        version: 5.0.0(9dedb2149c0b01b7b95471bdc42eb61b)
+      '@types/chai':
+        specifier: ^5.2.2
+        version: 5.2.2
       '@types/node':
         specifier: ^22.18.10
         version: 22.18.10
+      chai:
+        specifier: ^6.2.0
+        version: 6.2.0
+      ethers:
+        specifier: ^6.15.0
+        version: 6.15.0
       forge-std:
         specifier: github:foundry-rs/forge-std#v1.9.4
         version: https://codeload.github.com/foundry-rs/forge-std/tar.gz/1eea5bae12ae557d589f9f0f0edae2faa47cb262
@@ -420,11 +435,10 @@ packages:
   '@nomicfoundation/hardhat-errors@3.0.2':
     resolution: {integrity: sha512-8n4HZ0lfAFSw3SU1mrDXWslh11jH4W5MRyG9yT4d/vzx37uA3JBIzVQlnGVvE2ejl1QzqOqOxDuQqANWEzI9/w==}
 
-  '@nomicfoundation/hardhat-ethers@3.1.0':
-    resolution: {integrity: sha512-jx6fw3Ms7QBwFGT2MU6ICG292z0P81u6g54JjSV105+FbTZOF4FJqPksLfDybxkkOeq28eDxbqq7vpxRYyIlxA==}
+  '@nomicfoundation/hardhat-ethers@4.0.2':
+    resolution: {integrity: sha512-teW1GpImmpKF5pZGM5SVDHD10bGj5MafjdmmG/Ort0gRuPt0PZz1Up2ggJQPHdzP6/Q30Wgdmhg/qLGL/48lpw==}
     peerDependencies:
-      ethers: ^6.14.0
-      hardhat: ^2.26.0
+      hardhat: ^3.0.7
 
   '@nomicfoundation/hardhat-ignition-ethers@0.15.14':
     resolution: {integrity: sha512-eq+5n+c1DW18/Xp8/QrHBBvG5QaKUxYF/byol4f1jrnZ1zAy0OrqEa/oaNFWchhpLalX7d7suk/2EL0PbT0CDQ==}
@@ -453,6 +467,11 @@ packages:
 
   '@nomicfoundation/hardhat-keystore@3.0.1':
     resolution: {integrity: sha512-IHjTWf88Kp6ZsnwngVYNJphWwwhnkSjg+wBd9im5yo8IbvCjd0Otyv2ucw0Dol+mxM3t/6XJhEnhbA3JGe/EdQ==}
+    peerDependencies:
+      hardhat: ^3.0.0
+
+  '@nomicfoundation/hardhat-network-helpers@3.0.1':
+    resolution: {integrity: sha512-bNDZJawEEZhUQkUwvwlM5lLwcEBxQ5wNYDZsNHeiycPcYsDRhSFDuVPuKppJ78NGGnDUiwVsEogr/kRcQHk9rg==}
     peerDependencies:
       hardhat: ^3.0.0
 
@@ -639,6 +658,12 @@ packages:
   '@types/chai@4.3.20':
     resolution: {integrity: sha512-/pC9HAB5I/xMlc5FP77qjCnI16ChlJfW0tGa0IUcFn38VJrTV6DeZ60NU5KZBtaOZqjdpwTWohz5HU1RrhiYxQ==}
 
+  '@types/chai@5.2.2':
+    resolution: {integrity: sha512-8kB30R7Hwqf40JPiKhVzodJs2Qc1ZJ5zuT3uzw5Hq/dhNCl3G3l83jfpdI1e20BP348+fV7VIL/+FxaXkqBmWg==}
+
+  '@types/deep-eql@4.0.2':
+    resolution: {integrity: sha512-c9h9dVVMigMPc4bwTvC5dxqtqJZwQPePsWjPlpSOnojbor6pGqdk541lfA7AqFQr5pB1BRdq0juY9db81BwyFw==}
+
   '@types/glob@7.2.0':
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
 
@@ -745,9 +770,6 @@ packages:
     resolution: {integrity: sha512-HGyxoOTYUyCM6stUe6EJgnd4EoewAI7zMdfqO+kGjnlZmBDz/cR5pf8r/cR4Wq60sL/p0IkcjUEEPwS3GFrIyw==}
     engines: {node: '>=8'}
 
-  assertion-error@1.1.0:
-    resolution: {integrity: sha512-jgsaNduz+ndvGyFt3uSuWqvy4lCnIJiovtouQN5JZHOKCS2QuhEdbcQHFhVksz2N2U9hXJo8odG7ETyWlEeuDw==}
-
   async@1.5.2:
     resolution: {integrity: sha512-nSVgobk4rv61R9PUSDtYt7mPVB2olxNR5RWJcAsH676/ef11bUZwvu7+RGYrYauVdDPcO519v68wRhXQtxsV9w==}
 
@@ -813,9 +835,9 @@ packages:
     peerDependencies:
       chai: '>= 2.1.2 < 6'
 
-  chai@4.5.0:
-    resolution: {integrity: sha512-RITGBfijLkBddZvnn8jdqoTypxvqbOLYQkGGxXzeFjVHvudaPw0HNFD9x928/eUwYWd2dPCugVqspGALTZZQKw==}
-    engines: {node: '>=4'}
+  chai@6.2.0:
+    resolution: {integrity: sha512-aUTnJc/JipRzJrNADXVvpVqi6CO0dn3nx4EVPxijri+fj3LUUDyZQOgVeW54Ob3Y1Xh9Iz8f+CgaCl8v0mn9bA==}
+    engines: {node: '>=18'}
 
   chalk@2.4.2:
     resolution: {integrity: sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==}
@@ -1360,19 +1382,12 @@ packages:
   lodash.camelcase@4.3.0:
     resolution: {integrity: sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA==}
 
-  lodash.isequal@4.5.0:
-    resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==}
-    deprecated: This package is deprecated. Use require('node:util').isDeepStrictEqual instead.
-
   lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
 
   log-symbols@4.1.0:
     resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}
     engines: {node: '>=10'}
-
-  loupe@2.3.7:
-    resolution: {integrity: sha512-zSMINGVYkdpYSOBmLi0D1Uo7JU9nVdQKrHxC8eYlV+9YKK9WePqAlL7lSlorG/U2Fw1w0hTBmaa/jrQ3UbPHtA==}
 
   lru-cache@10.4.3:
     resolution: {integrity: sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==}
@@ -1535,9 +1550,6 @@ packages:
   path-type@4.0.0:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
-
-  pathval@1.1.1:
-    resolution: {integrity: sha512-Dp6zGqpTdETdR63lehJYPeIOqpiNBNtc7BpWSLrOje7UaIsE5aY92r/AunQA7rsXvet3lrJ3JnZX29UPTKXyKQ==}
 
   picomatch@2.3.1:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
@@ -2306,12 +2318,12 @@ snapshots:
       '@nomicfoundation/edr-linux-x64-musl': 0.12.0-next.7
       '@nomicfoundation/edr-win32-x64-msvc': 0.12.0-next.7
 
-  '@nomicfoundation/hardhat-chai-matchers@2.1.0(@nomicfoundation/hardhat-ethers@3.1.0(ethers@6.15.0)(hardhat@3.0.7))(chai@4.5.0)(ethers@6.15.0)(hardhat@3.0.7)':
+  '@nomicfoundation/hardhat-chai-matchers@2.1.0(@nomicfoundation/hardhat-ethers@4.0.2(hardhat@3.0.7))(chai@6.2.0)(ethers@6.15.0)(hardhat@3.0.7)':
     dependencies:
-      '@nomicfoundation/hardhat-ethers': 3.1.0(ethers@6.15.0)(hardhat@3.0.7)
+      '@nomicfoundation/hardhat-ethers': 4.0.2(hardhat@3.0.7)
       '@types/chai-as-promised': 7.1.8
-      chai: 4.5.0
-      chai-as-promised: 7.1.2(chai@4.5.0)
+      chai: 6.2.0
+      chai-as-promised: 7.1.2(chai@6.2.0)
       deep-eql: 4.1.4
       ethers: 6.15.0
       hardhat: 3.0.7
@@ -2323,18 +2335,22 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@nomicfoundation/hardhat-ethers@3.1.0(ethers@6.15.0)(hardhat@3.0.7)':
+  '@nomicfoundation/hardhat-ethers@4.0.2(hardhat@3.0.7)':
     dependencies:
+      '@nomicfoundation/hardhat-errors': 3.0.2
+      '@nomicfoundation/hardhat-utils': 3.0.3
       debug: 4.4.3(supports-color@8.1.1)
+      ethereum-cryptography: 2.2.1
       ethers: 6.15.0
       hardhat: 3.0.7
-      lodash.isequal: 4.5.0
     transitivePeerDependencies:
+      - bufferutil
       - supports-color
+      - utf-8-validate
 
-  '@nomicfoundation/hardhat-ignition-ethers@0.15.14(@nomicfoundation/hardhat-ethers@3.1.0(ethers@6.15.0)(hardhat@3.0.7))(@nomicfoundation/hardhat-ignition@3.0.3(@nomicfoundation/hardhat-verify@3.0.3(hardhat@3.0.7))(hardhat@3.0.7))(@nomicfoundation/ignition-core@3.0.3)(ethers@6.15.0)(hardhat@3.0.7)':
+  '@nomicfoundation/hardhat-ignition-ethers@0.15.14(@nomicfoundation/hardhat-ethers@4.0.2(hardhat@3.0.7))(@nomicfoundation/hardhat-ignition@3.0.3(@nomicfoundation/hardhat-verify@3.0.3(hardhat@3.0.7))(hardhat@3.0.7))(@nomicfoundation/ignition-core@3.0.3)(ethers@6.15.0)(hardhat@3.0.7)':
     dependencies:
-      '@nomicfoundation/hardhat-ethers': 3.1.0(ethers@6.15.0)(hardhat@3.0.7)
+      '@nomicfoundation/hardhat-ethers': 4.0.2(hardhat@3.0.7)
       '@nomicfoundation/hardhat-ignition': 3.0.3(@nomicfoundation/hardhat-verify@3.0.3(hardhat@3.0.7))(hardhat@3.0.7)
       '@nomicfoundation/ignition-core': 3.0.3
       ethers: 6.15.0
@@ -2383,6 +2399,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@nomicfoundation/hardhat-network-helpers@3.0.1(hardhat@3.0.7)':
+    dependencies:
+      '@nomicfoundation/hardhat-errors': 3.0.2
+      '@nomicfoundation/hardhat-utils': 3.0.3
+      hardhat: 3.0.7
+    transitivePeerDependencies:
+      - supports-color
+
   '@nomicfoundation/hardhat-node-test-reporter@3.0.1':
     dependencies:
       '@actions/core': 1.11.1
@@ -2401,11 +2425,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@nomicfoundation/hardhat-toolbox-viem@5.0.0(a4351d08991c7b6eb49cb9b43ec37a6e)':
+  '@nomicfoundation/hardhat-toolbox-viem@5.0.0(9dedb2149c0b01b7b95471bdc42eb61b)':
     dependencies:
       '@nomicfoundation/hardhat-ignition': 3.0.3(@nomicfoundation/hardhat-verify@3.0.3(hardhat@3.0.7))(hardhat@3.0.7)
       '@nomicfoundation/hardhat-ignition-viem': 3.0.3(@nomicfoundation/hardhat-ignition@3.0.3(@nomicfoundation/hardhat-verify@3.0.3(hardhat@3.0.7))(hardhat@3.0.7))(@nomicfoundation/hardhat-verify@3.0.3(hardhat@3.0.7))(@nomicfoundation/hardhat-viem@3.0.0(hardhat@3.0.7)(viem@2.38.1(typescript@5.8.3)(zod@3.25.76)))(@nomicfoundation/ignition-core@3.0.3)(hardhat@3.0.7)(viem@2.38.1(typescript@5.8.3)(zod@3.25.76))
       '@nomicfoundation/hardhat-keystore': 3.0.1(hardhat@3.0.7)
+      '@nomicfoundation/hardhat-network-helpers': 3.0.1(hardhat@3.0.7)
       '@nomicfoundation/hardhat-node-test-runner': 3.0.3(hardhat@3.0.7)
       '@nomicfoundation/hardhat-verify': 3.0.3(hardhat@3.0.7)
       '@nomicfoundation/hardhat-viem': 3.0.0(hardhat@3.0.7)(viem@2.38.1(typescript@5.8.3)(zod@3.25.76))
@@ -2414,18 +2439,19 @@ snapshots:
       hardhat: 3.0.7
       viem: 2.38.1(typescript@5.8.3)(zod@3.25.76)
 
-  '@nomicfoundation/hardhat-toolbox@6.1.0(aef264153621c52b02978f1d5e2a7496)':
+  '@nomicfoundation/hardhat-toolbox@6.1.0(ae09bad6bc43c66cfea667c1efcf7da2)':
     dependencies:
-      '@nomicfoundation/hardhat-chai-matchers': 2.1.0(@nomicfoundation/hardhat-ethers@3.1.0(ethers@6.15.0)(hardhat@3.0.7))(chai@4.5.0)(ethers@6.15.0)(hardhat@3.0.7)
-      '@nomicfoundation/hardhat-ethers': 3.1.0(ethers@6.15.0)(hardhat@3.0.7)
-      '@nomicfoundation/hardhat-ignition-ethers': 0.15.14(@nomicfoundation/hardhat-ethers@3.1.0(ethers@6.15.0)(hardhat@3.0.7))(@nomicfoundation/hardhat-ignition@3.0.3(@nomicfoundation/hardhat-verify@3.0.3(hardhat@3.0.7))(hardhat@3.0.7))(@nomicfoundation/ignition-core@3.0.3)(ethers@6.15.0)(hardhat@3.0.7)
+      '@nomicfoundation/hardhat-chai-matchers': 2.1.0(@nomicfoundation/hardhat-ethers@4.0.2(hardhat@3.0.7))(chai@6.2.0)(ethers@6.15.0)(hardhat@3.0.7)
+      '@nomicfoundation/hardhat-ethers': 4.0.2(hardhat@3.0.7)
+      '@nomicfoundation/hardhat-ignition-ethers': 0.15.14(@nomicfoundation/hardhat-ethers@4.0.2(hardhat@3.0.7))(@nomicfoundation/hardhat-ignition@3.0.3(@nomicfoundation/hardhat-verify@3.0.3(hardhat@3.0.7))(hardhat@3.0.7))(@nomicfoundation/ignition-core@3.0.3)(ethers@6.15.0)(hardhat@3.0.7)
+      '@nomicfoundation/hardhat-network-helpers': 3.0.1(hardhat@3.0.7)
       '@nomicfoundation/hardhat-verify': 3.0.3(hardhat@3.0.7)
       '@typechain/ethers-v6': 0.5.1(ethers@6.15.0)(typechain@8.3.2(typescript@5.8.3))(typescript@5.8.3)
       '@typechain/hardhat': 9.1.0(@typechain/ethers-v6@0.5.1(ethers@6.15.0)(typechain@8.3.2(typescript@5.8.3))(typescript@5.8.3))(ethers@6.15.0)(hardhat@3.0.7)(typechain@8.3.2(typescript@5.8.3))
-      '@types/chai': 4.3.20
+      '@types/chai': 5.2.2
       '@types/mocha': 10.0.10
       '@types/node': 22.18.10
-      chai: 4.5.0
+      chai: 6.2.0
       ethers: 6.15.0
       hardhat: 3.0.7
       hardhat-gas-reporter: 2.3.0(hardhat@3.0.7)(typescript@5.8.3)(zod@3.25.76)
@@ -2612,6 +2638,12 @@ snapshots:
 
   '@types/chai@4.3.20': {}
 
+  '@types/chai@5.2.2':
+    dependencies:
+      '@types/deep-eql': 4.0.2
+
+  '@types/deep-eql@4.0.2': {}
+
   '@types/glob@7.2.0':
     dependencies:
       '@types/minimatch': 6.0.0
@@ -2690,8 +2722,6 @@ snapshots:
 
   array-union@2.1.0: {}
 
-  assertion-error@1.1.0: {}
-
   async@1.5.2: {}
 
   asynckit@0.4.0: {}
@@ -2744,20 +2774,12 @@ snapshots:
 
   cbor2@1.12.0: {}
 
-  chai-as-promised@7.1.2(chai@4.5.0):
+  chai-as-promised@7.1.2(chai@6.2.0):
     dependencies:
-      chai: 4.5.0
+      chai: 6.2.0
       check-error: 1.0.3
 
-  chai@4.5.0:
-    dependencies:
-      assertion-error: 1.1.0
-      check-error: 1.0.3
-      deep-eql: 4.1.4
-      get-func-name: 2.0.2
-      loupe: 2.3.7
-      pathval: 1.1.1
-      type-detect: 4.1.0
+  chai@6.2.0: {}
 
   chalk@2.4.2:
     dependencies:
@@ -3385,18 +3407,12 @@ snapshots:
 
   lodash.camelcase@4.3.0: {}
 
-  lodash.isequal@4.5.0: {}
-
   lodash@4.17.21: {}
 
   log-symbols@4.1.0:
     dependencies:
       chalk: 4.1.2
       is-unicode-supported: 0.1.0
-
-  loupe@2.3.7:
-    dependencies:
-      get-func-name: 2.0.2
 
   lru-cache@10.4.3: {}
 
@@ -3569,8 +3585,6 @@ snapshots:
       minipass: 7.1.2
 
   path-type@4.0.0: {}
-
-  pathval@1.1.1: {}
 
   picomatch@2.3.1: {}
 
