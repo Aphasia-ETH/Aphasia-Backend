@@ -56,3 +56,4 @@ coverage/
 *.tmp
 *.temp
 TESTING_GUIDE.md
+IMPLEMENTATION_OVERVIEW.md
