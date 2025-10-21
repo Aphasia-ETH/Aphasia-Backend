@@ -29,7 +29,12 @@ class DatabaseService {
           onChainVerified: reviewData.onChainVerified || false,
           helpfulCount: 0,
           reportCount: 0,
-          status: 'active'
+          status: 'active',
+          // Batch attestation fields
+          batchId: reviewData.batchId || null,
+          batchTxHash: reviewData.batchTxHash || null,
+          batchAttested: reviewData.batchAttested || false,
+          batchAttestedAt: reviewData.batchAttestedAt || null
         }
       });
       return review;
@@ -60,6 +65,53 @@ class DatabaseService {
       return review;
     } catch (error) {
       console.error('Error fetching review:', error);
+      throw error;
+    }
+  }
+
+  async updateReviewBatchInfo(reviewId, batchData) {
+    try {
+      const review = await prisma.review.update({
+        where: { id: reviewId },
+        data: {
+          batchId: batchData.batchId,
+          batchTxHash: batchData.batchTxHash,
+          batchAttested: batchData.batchAttested,
+          batchAttestedAt: batchData.batchAttestedAt
+        }
+      });
+      return review;
+    } catch (error) {
+      console.error('Error updating review batch info:', error);
+      throw error;
+    }
+  }
+
+  async createMerkleProof(proofData) {
+    try {
+      const proof = await prisma.merkleProof.create({
+        data: {
+          reviewId: proofData.reviewId,
+          batchId: proofData.batchId,
+          leaf: proofData.leaf,
+          proof: proofData.proof
+        }
+      });
+      return proof;
+    } catch (error) {
+      console.error('Error creating Merkle proof:', error);
+      throw error;
+    }
+  }
+
+  async getMerkleProof(reviewId) {
+    try {
+      const proof = await prisma.merkleProof.findUnique({
+        where: { reviewId }
+      });
+      return proof;
+    } catch (error) {
+      console.error('Error fetching Merkle proof:', error);
       throw error;
     }
   }

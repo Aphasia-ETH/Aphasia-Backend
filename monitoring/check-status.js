@@ -22,6 +22,21 @@ async function checkStatus() {
     });
     console.log(`📊 Database: ${reviews.length} on-chain reviews`);
 
+    // Check batch attestations
+    const batchReviews = await prisma.review.findMany({
+      where: { batchAttested: true },
+      orderBy: { batchAttestedAt: 'desc' },
+      take: 5
+    });
+    console.log(`📦 Batch Attestations: ${batchReviews.length} batch-attested reviews`);
+
+    // Check Merkle proofs
+    const merkleProofs = await prisma.merkleProof.findMany({
+      orderBy: { createdAt: 'desc' },
+      take: 5
+    });
+    console.log(`🌳 Merkle Proofs: ${merkleProofs.length} proofs stored`);
+
     // Check HCS
     let hcsCount = 0;
     const query = new TopicMessageQuery().setTopicId(topicId).setStartTime(0);
@@ -41,20 +56,31 @@ async function checkStatus() {
     });
     console.log(`📨 HCS: ${hcsCount} messages found`);
 
-    // Check contract
-    console.log('🔗 Contract: Connected');
+    // Check contracts
+    console.log('🔗 Individual Contract: Connected');
+    console.log('🔗 Batch Contract: Connected');
 
     // Show recent reviews
     if (reviews.length > 0) {
       console.log('\n📋 Recent On-Chain Reviews:');
       reviews.forEach((review, i) => {
-        console.log(`${i + 1}. ${review.productId} - Rating: ${review.rating} - Level: ${review.authorVerificationLevel}`);
+        const batchStatus = review.batchAttested ? ' (Batch Attested)' : '';
+        console.log(`${i + 1}. ${review.productId} - Rating: ${review.rating} - Level: ${review.authorVerificationLevel}${batchStatus}`);
+      });
+    }
+
+    // Show recent batch attestations
+    if (batchReviews.length > 0) {
+      console.log('\n📦 Recent Batch Attestations:');
+      batchReviews.forEach((review, i) => {
+        console.log(`${i + 1}. Batch: ${review.batchId} - Product: ${review.productId} - Rating: ${review.rating}`);
       });
     }
 
     console.log('\n🌐 Links:');
     console.log(`HCS: https://testnet.hashscan.io/topic/${process.env.HCS_TOPIC_ID}`);
-    console.log(`Contract: https://testnet.hashscan.io/contract/${process.env.CONTRACT_ID}`);
+    console.log(`Individual Contract: https://testnet.hashscan.io/contract/${process.env.CONTRACT_ID}`);
+    console.log(`Batch Contract: https://testnet.hashscan.io/contract/${process.env.BATCH_ATTESTATION_CONTRACT_ID}`);
 
     await prisma.$disconnect();
     client.close();

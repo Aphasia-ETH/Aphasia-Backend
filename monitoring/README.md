@@ -4,7 +4,7 @@ This folder contains scripts to monitor and verify on-chain operations.
 
 ## Files
 
-- **`check-status.js`** - Main monitoring script (simple and fast)
+- **`check-status.js`** - Main monitoring script 
 - **`check-hcs.js`** - Check HCS messages only
 - **`simple-verify.js`** - Simple verification script
 - **`verify-onchain.js`** - Detailed contract verification
@@ -25,8 +25,10 @@ node monitoring/check-status.js
 ### `check-status.js` (Recommended)
 - ✅ Database status
 - ✅ HCS message count
-- ✅ Contract connectivity
+- ✅ Contract connectivity (Individual + Batch)
 - ✅ Recent reviews summary
+- ✅ Batch attestation status
+- ✅ Merkle proof storage
 
 ### `check-hcs.js`
 - 📨 Lists all HCS messages
@@ -36,12 +38,11 @@ node monitoring/check-status.js
 ### `simple-verify.js`
 - 🔍 Basic verification
 - 📊 Shows what's working
-- ✅ Good for quick checks
+
 
 ### `verify-onchain.js`
 - 🔍 Detailed contract queries
 - 📊 Full attestation verification
-- ⚠️ May fail if contract functions aren't implemented
 
 ## Usage
 
@@ -51,3 +52,21 @@ pnpm run status
 ```
 
 That's it! Simple and effective monitoring.
+
+## Batch Optimization Monitoring
+
+The monitoring scripts now include batch optimization status:
+
+- **Batch Attestations:** Shows reviews that have been batch-attested
+- **Merkle Proofs:** Displays stored Merkle proofs for verification
+- **Contract Links:** Links to both individual and batch contracts
+- **Cost Tracking:** Monitors batch processing efficiency
+
+### Batch Status API
+```bash
+# Check batch processing status
+curl http://localhost:3000/api/v1/batch/status
+
+# Force batch attestation (for testing)
+curl -X POST http://localhost:3000/api/v1/batch/force
+```

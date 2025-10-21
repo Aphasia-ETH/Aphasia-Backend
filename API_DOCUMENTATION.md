@@ -13,6 +13,99 @@ Authorization: Bearer <jwt_token>
 
 ---
 
+## 🚀 Batch Optimization Endpoints
+
+### Create L3 Batch Review (Cost Optimized)
+**POST** `/api/v1/reviews/l3-batch`
+
+Create a Level 3 review with batch optimization for 99% cost reduction.
+
+**Headers:**
+```
+x-user-id: <user_id>
+x-wallet-address: <wallet_address>
+```
+
+**Request Body:**
+```json
+{
+  "productId": "product-123",
+  "rating": 5,
+  "text": "Excellent product!",
+  "images": []
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "level": 3,
+  "reviewId": "cmgzp59il00047ukfve92el5f",
+  "productId": "product-123",
+  "rating": 5,
+  "ipfsHash": "Qmbwsh3gE1h92G5GUzvSWA3sKgy9mP52CFU9YgBmzPFJiV",
+  "reviewerWallet": "0x1234567890123456789012345678901234567890",
+  "hcsSequence": "16",
+  "onChainVerified": true,
+  "verification": {
+    "hcs": {
+      "sequence": "16",
+      "topicId": "0.0.7097974",
+      "url": "https://hashscan.io/testnet/topic/0.0.7097974",
+      "cost": "$0.0001",
+      "status": "verified"
+    },
+    "batch": {
+      "status": "pending",
+      "message": "Will be included in next batch (every 100 reviews or 1 hour)",
+      "estimatedCost": "$0.001 per review"
+    }
+  }
+}
+```
+
+### Get Batch Status
+**GET** `/api/v1/batch/status`
+
+Get current batch processing status.
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "pendingReviews": 3,
+    "batchSize": 100,
+    "batchTimeout": 3600000,
+    "timeSinceLastBatch": 1234567,
+    "shouldAttest": false,
+    "nextBatchTrigger": "size"
+  }
+}
+```
+
+### Force Batch Attestation
+**POST** `/api/v1/batch/force`
+
+Force immediate batch attestation (for testing/admin purposes).
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "batchId": "batch-8fb7c7610bcfac25",
+    "reviewCount": 5,
+    "merkleRoot": "0x1234567890abcdef...",
+    "transactionHash": "0.0.7003610@1760998903.273731632",
+    "cost": 0.10
+  }
+}
+```
+
+---
+
 ## 📁 IPFS Endpoints
 
 ### Upload Content to IPFS

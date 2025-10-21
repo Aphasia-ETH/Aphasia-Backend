@@ -8,6 +8,7 @@ const ipfsService = require('./services/ipfs');
 const databaseService = require('./services/database');
 const hederaService = require('./services/hedera');
 const contractService = require('./services/contract');
+const batchAttestationService = require('./services/batch-attestation.service');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -243,6 +244,109 @@ app.post('/api/v1/reviews/l3', async (req, res) => {
   }
 });
 
+// Create L3 review with batch processing (optimized)
+app.post('/api/v1/reviews/l3-batch', async (req, res) => {
+  try {
+    const { productId, rating, text, images } = req.body;
+    const authorId = req.headers['x-user-id'] || 'test-user';
+    const reviewerWallet = req.headers['x-wallet-address'] || '0x1234567890123456789012345678901234567890';
+    
+    if (!productId || !rating) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Product ID and rating are required' 
+      });
+    }
+
+    const reviewId = `l3-batch-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
+    // Create or get user
+    const user = await databaseService.createOrGetUser({
+      privyUserId: authorId,
+      privyWallet: reviewerWallet,
+      verificationLevel: 3,
+      trustScore: 100
+    });
+
+    // 1. Upload to IPFS
+    const ipfsHash = await ipfsService.uploadReviewContent({
+      text: text || '',
+      images: images || [],
+      rating: parseInt(rating),
+      productId
+    });
+
+    // 2. Submit HCS message (immediate verification - $0.0001)
+    const hcsResult = await hederaService.submitHCSMessage({
+      reviewId,
+      productId,
+      rating: parseInt(rating),
+      ipfsHash,
+      reviewerWallet,
+      timestamp: Date.now()
+    });
+
+    // 3. Persist to DB with HCS data
+    const review = await databaseService.createReview({
+      productId,
+      productUrl: '',
+      platform: 'aphasia',
+      rating: parseInt(rating),
+      text: text || '',
+      authorId: user.id,
+      authorVerificationLevel: 3,
+      authorTrustScore: 100,
+      ipfsHash,
+      hederaSequence: hcsResult.sequence,
+      hederaTopicId: process.env.HCS_TOPIC_ID || '',
+      hederaTimestamp: new Date(),
+      onChainVerified: true, // HCS provides immediate verification
+      batchAttested: false   // Will be updated when batch is attested
+    });
+
+    // 4. Add to batch queue (batched verification - amortized cost)
+    await batchAttestationService.addReviewToBatch({
+      reviewId: review.id,
+      productId: review.productId,
+      ipfsHash: review.ipfsHash,
+      rating: review.rating,
+      reviewerWallet: user.privyWallet,
+      hcsSequence: hcsResult.sequence
+    });
+
+    res.status(201).json({ 
+      success: true, 
+      level: 3, 
+      reviewId: review.id, 
+      productId, 
+      rating, 
+      ipfsHash, 
+      reviewerWallet,
+      hcsSequence: hcsResult.sequence,
+      onChainVerified: true,
+      verification: {
+        hcs: {
+          sequence: hcsResult.sequence,
+          topicId: process.env.HCS_TOPIC_ID,
+          url: `https://hashscan.io/testnet/topic/${process.env.HCS_TOPIC_ID}`,
+          cost: '$0.0001',
+          status: 'verified'
+        },
+        batch: {
+          status: 'pending',
+          message: 'Will be included in next batch (every 100 reviews or 1 hour)',
+          estimatedCost: '$0.001 per review'
+        }
+      }
+    });
+  } catch (error) {
+    res.status(400).json({ 
+      success: false, 
+      error: error?.message || 'Failed to create L3 batch review' 
+    });
+  }
+});
+
 // Get reviews for a product
 app.get('/api/v1/reviews/product/:productId', async (req, res) => {
   try {
@@ -308,6 +412,37 @@ app.get('/api/v1/reviews/content/:reviewId', async (req, res) => {
     res.status(500).json({ 
       success: false, 
       error: error?.message || 'Failed to retrieve review content' 
+    });
+  }
+});
+
+// Batch management endpoints
+app.get('/api/v1/batch/status', async (req, res) => {
+  try {
+    const status = batchAttestationService.getBatchStatus();
+    res.json({
+      success: true,
+      data: status
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error?.message || 'Failed to get batch status'
+    });
+  }
+});
+
+app.post('/api/v1/batch/force', async (req, res) => {
+  try {
+    const result = await batchAttestationService.forceBatchAttestation();
+    res.json({
+      success: true,
+      data: result
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error?.message || 'Failed to force batch attestation'
     });
   }
 });
