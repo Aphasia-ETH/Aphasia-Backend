@@ -9,10 +9,12 @@ datasource db {
 
 model User {
   id                String   @id @default(cuid())
-  privyUserId       String   @unique
+  privyUserId       String?  @unique
   privyWallet       String
   hederaDID         String   @unique
-  email             String?
+  email             String?  @unique
+  password          String?  // Hashed password for email/password auth
+  name              String?
   emailVerified     Boolean  @default(false)
   verificationLevel Int      @default(0)
   trustScore        Int      @default(0)
@@ -26,6 +28,7 @@ model User {
 
   @@index([privyUserId])
   @@index([hederaDID])
+  @@index([email])
   @@index([verificationLevel])
   @@index([trustScore])
 }

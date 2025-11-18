@@ -61,9 +61,9 @@ app.use(errorHandler);
 // Start server
 async function startServer() {
   try {
-    // Connect to database - temporarily disabled for debugging
-    // await Database.connect();
-    // logger.info('Database connected');
+    // Connect to database
+    await Database.connect();
+    logger.info('Database connected');
 
     // Start listening
     app.listen(PORT, () => {

@@ -4,7 +4,8 @@ import { reviewLimiter } from '../../middleware/rateLimit.middleware.ts';
 import { 
   createLevel1Review, 
   createLevel2Review, 
-  createLevel3Review, 
+  createLevel3Review,
+  createLevel3BatchReview,
   getReviewContent,
   getProductReviews,
   getProductReviewsSummary
@@ -16,6 +17,7 @@ const router = Router();
 router.post('/l1', requireAuth, reviewLimiter, createLevel1Review);
 router.post('/l2', requireAuth, reviewLimiter, createLevel2Review);
 router.post('/l3', requireAuth, reviewLimiter, createLevel3Review);
+router.post('/l3-batch', requireAuth, reviewLimiter, createLevel3BatchReview);
 
 // Get reviews
 router.get('/product/:productId', optionalAuth, getProductReviews);
