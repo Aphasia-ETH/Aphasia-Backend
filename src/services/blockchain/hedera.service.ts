@@ -1,7 +1,34 @@
 import { publicClient, walletClient } from '../../config/evm.ts';
-import reviewAttestation from '../../../contracts/artifacts/contracts/ReviewAttestation.sol/ReviewAttestation.json' assert { type: 'json' };
+import * as fs from 'fs';
+import * as path from 'path';
 
 const REVIEW_ATTESTATION_ADDRESS = process.env.REVIEW_ATTESTATION_ADDRESS as `0x${string}` | undefined;
+
+// Lazy load contract artifact to avoid startup errors if contracts aren't compiled
+let reviewAttestationAbi: any = null;
+
+function loadContractArtifact() {
+  if (reviewAttestationAbi) {
+    return reviewAttestationAbi;
+  }
+
+  const artifactPath = path.join(__dirname, '../../../contracts/artifacts/contracts/ReviewAttestation.sol/ReviewAttestation.json');
+  
+  if (!fs.existsSync(artifactPath)) {
+    throw new Error(
+      `Contract artifact not found at ${artifactPath}. ` +
+      `Please compile the contracts first by running: cd contracts && npm run compile`
+    );
+  }
+
+  try {
+    const artifact = JSON.parse(fs.readFileSync(artifactPath, 'utf8'));
+    reviewAttestationAbi = artifact.abi;
+    return reviewAttestationAbi;
+  } catch (error) {
+    throw new Error(`Failed to load contract artifact: ${error instanceof Error ? error.message : String(error)}`);
+  }
+}
 
 export class HederaEvmService {
   static ensureConfig() {
@@ -11,9 +38,10 @@ export class HederaEvmService {
 
   static getContract() {
     this.ensureConfig();
+    const abi = loadContractArtifact();
     return {
       address: REVIEW_ATTESTATION_ADDRESS!,
-      abi: (reviewAttestation as any).abi,
+      abi,
     };
   }
 
